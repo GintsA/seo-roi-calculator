@@ -1,2 +1,20 @@
 :root { font-family: system-ui, Arial, sans-serif; }
 .container { max-width: 860px; margin: 0 auto; padding: 24px; }
+
+.grid { display: grid; gap: 12px; grid-template-columns: 1fr; }
+label span { display: block; font-weight: 600; margin-bottom: 6px; }
+input { width: 100%; padding: 10px; font-size: 16px; }
+.actions { display: flex; gap: 10px; margin-top: 12px; flex-wrap: wrap; }
+button { padding: 10px 14px; font-size: 16px; cursor: pointer; }
+.primary { font-weight: 700; }
+
+.errors { margin-top: 10px; color: #b00020; }
+.results { margin-top: 18px; }
+.cards { display: grid; gap: 12px; grid-template-columns: 1fr; }
+.card { border: 1px solid #ddd; border-radius: 10px; padding: 12px; }
+.note { margin-top: 18px; }
+
+@media (min-width: 720px) {
+  .grid { grid-template-columns: 1fr 1fr; }
+  .cards { grid-template-columns: 1fr 1fr 1fr; }
+}
