@@ -18,3 +18,5 @@ button { padding: 10px 14px; font-size: 16px; cursor: pointer; }
   .grid { grid-template-columns: 1fr 1fr; }
   .cards { grid-template-columns: 1fr 1fr 1fr; }
 }
+.support { margin-top: 18px; padding: 12px; border: 1px solid #ddd; border-radius: 10px; }
+.support a { font-weight: 700; }
