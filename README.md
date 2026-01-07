@@ -1,14 +1,12 @@
-Release URL: (TBD)
+Release URL: (https://github.com/GintsA/seo-roi-calculator/blob/main/README.md)
 
-Live app URL: (TBD)
+Live app URL: (https://gintsa.github.io/seo-roi-calculator/)
 
-Repo URL: (TBD)
+Repo URL: (https://github.com/GintsA/seo-roi-calculator)
 
 Version/tag: v0.1.0 (TBD date)
 
 Evidence folder link (or path in repo): /EVIDENCE/
-
-Monetization link: (TBD)
 
 ## Monetization
 
