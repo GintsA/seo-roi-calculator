@@ -37,10 +37,7 @@ https://buymeacoffee.com/gintsa
 
 ## Evidence
 
-- [screenshot-01.png](./EVIDENCE/screenshot-01.png)
-- [screenshot-02.png](./EVIDENCE/screenshot-02.png)
-- [demo.mp4](./EVIDENCE/demo.mp4)
-- [monetization-proof.png](./EVIDENCE/monetization-proof.png)
+Evidence files removed.
 
 ## Reflection
 
