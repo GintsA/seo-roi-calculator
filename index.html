@@ -14,22 +14,26 @@
       <div class="grid">
         <label>
           <span>Current monthly visitors</span>
-          <input id="currentVisitors" type="number" inputmode="numeric" min="0" max="100000000" step="1" required />
+          <small class="help">per month</small>
+          <input id="currentVisitors" type="number" inputmode="numeric" min="0" max="100000000" step="1" placeholder="10000" required />
         </label>
 
         <label>
           <span>Expected traffic increase (%)</span>
-          <input id="trafficIncreasePct" type="text" inputmode="decimal" required />
+          <small class="help">0-500</small>
+          <input id="trafficIncreasePct" type="text" inputmode="decimal" step="0.01" placeholder="20" required />
         </label>
 
         <label>
           <span>Conversion rate (%)</span>
-          <input id="conversionRatePct" type="text" inputmode="decimal" required />
+          <small class="help">0-100</small>
+          <input id="conversionRatePct" type="text" inputmode="decimal" step="0.01" placeholder="2.5" required />
         </label>
 
         <label>
           <span>Revenue per conversion (EUR)</span>
-          <input id="revenuePerConversion" type="text" inputmode="decimal" required />
+          <small class="help">EUR per conversion</small>
+          <input id="revenuePerConversion" type="text" inputmode="decimal" step="0.01" placeholder="50" required />
         </label>
       </div>
 

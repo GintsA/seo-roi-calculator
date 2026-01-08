@@ -105,6 +105,16 @@ function validate(values) {
   return errs;
 }
 
+function findFirstInvalidField(values) {
+  for (const [key, field] of FIELD_DEFS) {
+    const v = values[key];
+    if (v === null) return field.id;
+    if (v < field.min || v > field.max) return field.id;
+    if (field.integer && !Number.isInteger(v)) return field.id;
+  }
+  return null;
+}
+
 // Calculates baseline and projected revenue using a linear model.
 // It derives conversions from visitors and conversion rate.
 // It applies the traffic increase to visitors and recomputes conversions.
@@ -150,6 +160,7 @@ function resetAll() {
   form.reset();
   showErrors([]);
   resultsEl.hidden = true;
+  el(LIMITS.currentVisitors.id).focus();
 }
 
 const EXPORTS = { calculate };
@@ -164,6 +175,10 @@ form.addEventListener("submit", (e) => {
   const errs = validate(values);
   showErrors(errs);
   if (errs.length > 0) {
+    const firstInvalidId = findFirstInvalidField(values);
+    if (firstInvalidId) {
+      el(firstInvalidId).focus();
+    }
     resultsEl.hidden = true;
     return;
   }
