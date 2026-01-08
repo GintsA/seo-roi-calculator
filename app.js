@@ -17,13 +17,25 @@ function formatInt(value) {
 function readNumber(id) {
   const raw = el(id).value.trim();
   if (raw === "") return null;
-  const hasComma = raw.includes(",");
-  const hasDot = raw.includes(".");
-  let normalized = raw;
+  const cleaned = raw.replace(/\s+/g, "");
+  const hasComma = cleaned.includes(",");
+  const hasDot = cleaned.includes(".");
+  let normalized = cleaned;
   if (hasComma && hasDot) {
-    normalized = raw.replace(/,/g, "");
+    const lastComma = cleaned.lastIndexOf(",");
+    const lastDot = cleaned.lastIndexOf(".");
+    if (lastComma > lastDot) {
+      normalized = cleaned.replace(/\./g, "").replace(",", ".");
+    } else {
+      normalized = cleaned.replace(/,/g, "");
+    }
   } else if (hasComma) {
-    normalized = raw.replace(",", ".");
+    const parts = cleaned.split(",");
+    if (parts.length === 2 && parts[1].length === 3 && parts[0].length >= 1) {
+      normalized = parts[0] + parts[1];
+    } else {
+      normalized = cleaned.replace(",", ".");
+    }
   }
   const num = Number(normalized);
   return Number.isFinite(num) ? num : null;
