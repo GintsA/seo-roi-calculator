@@ -1,3 +1,33 @@
+const LIMITS = {
+  currentVisitors: {
+    id: "currentVisitors",
+    label: "Current monthly visitors",
+    min: 0,
+    max: 100000000,
+    integer: true,
+  },
+  trafficIncreasePct: {
+    id: "trafficIncreasePct",
+    label: "Expected traffic increase (%)",
+    min: 0,
+    max: 500,
+  },
+  conversionRatePct: {
+    id: "conversionRatePct",
+    label: "Conversion rate (%)",
+    min: 0,
+    max: 100,
+  },
+  revenuePerConversion: {
+    id: "revenuePerConversion",
+    label: "Revenue per conversion (EUR)",
+    min: 0,
+    max: 1000000,
+  },
+};
+
+const FIELD_DEFS = Object.entries(LIMITS);
+
 const form = document.getElementById("roiForm");
 const resetBtn = document.getElementById("resetBtn");
 const errorsEl = document.getElementById("errors");
@@ -14,67 +44,77 @@ function formatInt(value) {
   return new Intl.NumberFormat("en-GB", { maximumFractionDigits: 0 }).format(value);
 }
 
-function readNumber(id) {
-  const raw = el(id).value.trim();
-  if (raw === "") return null;
+function normalizeNumberInput(raw) {
   const cleaned = raw.replace(/\s+/g, "");
   const hasComma = cleaned.includes(",");
   const hasDot = cleaned.includes(".");
-  let normalized = cleaned;
+
   if (hasComma && hasDot) {
     const lastComma = cleaned.lastIndexOf(",");
     const lastDot = cleaned.lastIndexOf(".");
     if (lastComma > lastDot) {
-      normalized = cleaned.replace(/\./g, "").replace(",", ".");
-    } else {
-      normalized = cleaned.replace(/,/g, "");
+      return cleaned.replace(/\./g, "").replace(",", ".");
     }
-  } else if (hasComma) {
+    return cleaned.replace(/,/g, "");
+  }
+
+  if (hasComma) {
     const parts = cleaned.split(",");
     if (parts.length === 2 && parts[1].length === 3 && parts[0].length >= 1) {
-      normalized = parts[0] + parts[1];
-    } else {
-      normalized = cleaned.replace(",", ".");
+      return parts[0] + parts[1];
     }
+    return cleaned.replace(",", ".");
   }
+
+  return cleaned;
+}
+
+function readNumber(id) {
+  const raw = el(id).value.trim();
+  if (raw === "") return null;
+  const normalized = normalizeNumberInput(raw);
   const num = Number(normalized);
   return Number.isFinite(num) ? num : null;
+}
+
+function readValues() {
+  const values = {};
+  for (const [key, field] of FIELD_DEFS) {
+    values[key] = readNumber(field.id);
+  }
+  return values;
 }
 
 function validate(values) {
   const errs = [];
 
-  const rules = [
-    { key: "currentVisitors", label: "Current monthly visitors", min: 0, max: 100000000, integer: true },
-    { key: "trafficIncrease", label: "Expected traffic increase (%)", min: 0, max: 500 },
-    { key: "conversionRate", label: "Conversion rate (%)", min: 0, max: 100 },
-    { key: "revenuePerConversion", label: "Revenue per conversion (EUR)", min: 0, max: 1000000 },
-  ];
-
-  for (const r of rules) {
-    const v = values[r.key];
+  for (const [key, field] of FIELD_DEFS) {
+    const v = values[key];
     if (v === null) {
-      errs.push(`${r.label} is required.`);
+      errs.push(`${field.label} is required.`);
       continue;
     }
-    if (v < r.min || v > r.max) {
-      errs.push(`${r.label} must be between ${r.min} and ${r.max}.`);
+    if (v < field.min || v > field.max) {
+      errs.push(`${field.label} must be between ${field.min} and ${field.max}.`);
     }
-    if (r.integer && !Number.isInteger(v)) {
-      errs.push(`${r.label} must be a whole number.`);
+    if (field.integer && !Number.isInteger(v)) {
+      errs.push(`${field.label} must be a whole number.`);
     }
   }
 
   return errs;
 }
 
+// Calculates baseline and projected revenue using a linear model.
+// It derives conversions from visitors and conversion rate.
+// It applies the traffic increase to visitors and recomputes conversions.
+// Revenue equals conversions times revenue per conversion; delta is projected minus current.
 function calculate(values) {
-  // Required formulas from the assignment doc
-  const currentConversions = values.currentVisitors * (values.conversionRate / 100);
+  const currentConversions = values.currentVisitors * (values.conversionRatePct / 100);
   const currentRevenue = currentConversions * values.revenuePerConversion;
 
-  const projectedVisitors = values.currentVisitors * (1 + values.trafficIncrease / 100);
-  const projectedConversions = projectedVisitors * (values.conversionRate / 100);
+  const projectedVisitors = values.currentVisitors * (1 + values.trafficIncreasePct / 100);
+  const projectedConversions = projectedVisitors * (values.conversionRatePct / 100);
   const projectedRevenue = projectedConversions * values.revenuePerConversion;
 
   const revenueDelta = projectedRevenue - currentRevenue;
@@ -96,12 +136,12 @@ function showErrors(errs) {
   errorsEl.innerHTML = `<ul>${errs.map((e) => `<li>${e}</li>`).join("")}</ul>`;
 }
 
-function renderResults(r) {
-  el("currentRevenue").textContent = formatEUR(r.currentRevenue);
-  el("projectedVisitors").textContent = formatInt(Math.round(r.projectedVisitors));
-  el("projectedConversions").textContent = formatInt(Math.round(r.projectedConversions));
-  el("projectedRevenue").textContent = formatEUR(r.projectedRevenue);
-  el("revenueDelta").textContent = formatEUR(r.revenueDelta);
+function renderResults(result) {
+  el("currentRevenue").textContent = formatEUR(result.currentRevenue);
+  el("projectedVisitors").textContent = formatInt(Math.round(result.projectedVisitors));
+  el("projectedConversions").textContent = formatInt(Math.round(result.projectedConversions));
+  el("projectedRevenue").textContent = formatEUR(result.projectedRevenue);
+  el("revenueDelta").textContent = formatEUR(result.revenueDelta);
 
   resultsEl.hidden = false;
 }
@@ -112,16 +152,15 @@ function resetAll() {
   resultsEl.hidden = true;
 }
 
+const EXPORTS = { calculate };
+if (typeof window !== "undefined") {
+  window.SEORoiCalculator = EXPORTS;
+}
+
 form.addEventListener("submit", (e) => {
   e.preventDefault();
 
-  const values = {
-    currentVisitors: readNumber("currentVisitors"),
-    trafficIncrease: readNumber("trafficIncrease"),
-    conversionRate: readNumber("conversionRate"),
-    revenuePerConversion: readNumber("revenuePerConversion"),
-  };
-
+  const values = readValues();
   const errs = validate(values);
   showErrors(errs);
   if (errs.length > 0) {
