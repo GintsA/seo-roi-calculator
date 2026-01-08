@@ -41,6 +41,11 @@ function formatEUR(value) {
   return `EUR ${formatted}`;
 }
 
+function formatSignedEUR(value) {
+  const sign = value < 0 ? "-" : "";
+  return `${sign}${formatEUR(Math.abs(value))}`;
+}
+
 function formatInt(value) {
   return new Intl.NumberFormat("en-GB", { maximumFractionDigits: 0 }).format(value);
 }
@@ -173,7 +178,7 @@ function renderResults(result) {
   el("projectedVisitors").textContent = formatInt(Math.round(result.projectedVisitors));
   el("projectedConversions").textContent = formatInt(Math.round(result.projectedConversions));
   el("projectedRevenue").textContent = formatEUR(result.projectedRevenue);
-  el("revenueDelta").textContent = formatEUR(result.revenueDelta);
+  el("revenueDelta").textContent = formatSignedEUR(result.revenueDelta);
 
   resultsEl.hidden = false;
 }
