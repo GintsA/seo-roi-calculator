@@ -32,6 +32,7 @@ const form = document.getElementById("roiForm");
 const resetBtn = document.getElementById("resetBtn");
 const errorsEl = document.getElementById("errors");
 const resultsEl = document.getElementById("results");
+let hasSubmitted = false;
 
 const el = (id) => document.getElementById(id);
 
@@ -90,26 +91,28 @@ function requiredMessage(label) {
   return `Please enter ${cleaned.toLowerCase()}.`;
 }
 
+function validateField(field, value) {
+  if (value === null) {
+    return requiredMessage(field.label);
+  }
+  if (value < field.min || value > field.max) {
+    return `${field.label} must be between ${field.min} and ${field.max}.`;
+  }
+  if (field.integer && !Number.isInteger(value)) {
+    return `${field.label} must be a whole number.`;
+  }
+  return null;
+}
+
 function validate(values) {
   const errs = [];
   const invalidIds = new Set();
 
   for (const [key, field] of FIELD_DEFS) {
-    const v = values[key];
-    if (v === null) {
-      errs.push(requiredMessage(field.label));
-      invalidIds.add(field.id);
-      continue;
-    }
-    if (v < field.min || v > field.max) {
-      errs.push(`${field.label} must be between ${field.min} and ${field.max}.`);
-      invalidIds.add(field.id);
-      continue;
-    }
-    if (field.integer && !Number.isInteger(v)) {
-      errs.push(`${field.label} must be a whole number.`);
-      invalidIds.add(field.id);
-    }
+    const message = validateField(field, values[key]);
+    if (!message) continue;
+    errs.push(message);
+    invalidIds.add(field.id);
   }
 
   return { errs, invalidIds };
@@ -127,12 +130,9 @@ function setFieldErrorState(invalidIds) {
   }
 }
 
-function findFirstInvalidField(values) {
-  for (const [key, field] of FIELD_DEFS) {
-    const v = values[key];
-    if (v === null) return field.id;
-    if (v < field.min || v > field.max) return field.id;
-    if (field.integer && !Number.isInteger(v)) return field.id;
+function findFirstInvalidFieldId(invalidIds) {
+  for (const [, field] of FIELD_DEFS) {
+    if (invalidIds.has(field.id)) return field.id;
   }
   return null;
 }
@@ -183,6 +183,7 @@ function resetAll() {
   showErrors([]);
   resultsEl.hidden = true;
   setFieldErrorState(new Set());
+  hasSubmitted = false;
   el(LIMITS.currentVisitors.id).focus();
 }
 
@@ -193,13 +194,14 @@ if (typeof window !== "undefined") {
 
 form.addEventListener("submit", (e) => {
   e.preventDefault();
+  hasSubmitted = true;
 
   const values = readValues();
   const { errs, invalidIds } = validate(values);
   showErrors(errs);
   setFieldErrorState(invalidIds);
   if (errs.length > 0) {
-    const firstInvalidId = findFirstInvalidField(values);
+    const firstInvalidId = findFirstInvalidFieldId(invalidIds);
     if (firstInvalidId) {
       el(firstInvalidId).focus();
     }
@@ -214,7 +216,11 @@ form.addEventListener("submit", (e) => {
 resetBtn.addEventListener("click", resetAll);
 
 form.addEventListener("input", (e) => {
-  if (e.target && e.target.classList) {
-    e.target.classList.remove("input-error");
-  }
+  if (!hasSubmitted || !resultsEl.hidden) return;
+  if (!e.target || !e.target.classList) return;
+
+  const values = readValues();
+  const { errs, invalidIds } = validate(values);
+  showErrors(errs);
+  setFieldErrorState(invalidIds);
 });
