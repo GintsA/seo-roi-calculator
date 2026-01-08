@@ -85,24 +85,46 @@ function readValues() {
   return values;
 }
 
+function requiredMessage(label) {
+  const cleaned = label.replace(/\s*\(.*\)\s*$/, "");
+  return `Please enter ${cleaned.toLowerCase()}.`;
+}
+
 function validate(values) {
   const errs = [];
+  const invalidIds = new Set();
 
   for (const [key, field] of FIELD_DEFS) {
     const v = values[key];
     if (v === null) {
-      errs.push(`${field.label} is required.`);
+      errs.push(requiredMessage(field.label));
+      invalidIds.add(field.id);
       continue;
     }
     if (v < field.min || v > field.max) {
       errs.push(`${field.label} must be between ${field.min} and ${field.max}.`);
+      invalidIds.add(field.id);
+      continue;
     }
     if (field.integer && !Number.isInteger(v)) {
       errs.push(`${field.label} must be a whole number.`);
+      invalidIds.add(field.id);
     }
   }
 
-  return errs;
+  return { errs, invalidIds };
+}
+
+function setFieldErrorState(invalidIds) {
+  for (const [, field] of FIELD_DEFS) {
+    const input = el(field.id);
+    if (!input) continue;
+    if (invalidIds.has(field.id)) {
+      input.classList.add("input-error");
+    } else {
+      input.classList.remove("input-error");
+    }
+  }
 }
 
 function findFirstInvalidField(values) {
@@ -160,6 +182,7 @@ function resetAll() {
   form.reset();
   showErrors([]);
   resultsEl.hidden = true;
+  setFieldErrorState(new Set());
   el(LIMITS.currentVisitors.id).focus();
 }
 
@@ -172,8 +195,9 @@ form.addEventListener("submit", (e) => {
   e.preventDefault();
 
   const values = readValues();
-  const errs = validate(values);
+  const { errs, invalidIds } = validate(values);
   showErrors(errs);
+  setFieldErrorState(invalidIds);
   if (errs.length > 0) {
     const firstInvalidId = findFirstInvalidField(values);
     if (firstInvalidId) {
@@ -188,3 +212,9 @@ form.addEventListener("submit", (e) => {
 });
 
 resetBtn.addEventListener("click", resetAll);
+
+form.addEventListener("input", (e) => {
+  if (e.target && e.target.classList) {
+    e.target.classList.remove("input-error");
+  }
+});
