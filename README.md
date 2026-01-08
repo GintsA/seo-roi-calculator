@@ -14,7 +14,7 @@ A static SEO ROI calculator that estimates baseline revenue, projected revenue a
 1. Enter current monthly visitors.
 2. Enter expected traffic increase (%).
 3. Enter conversion rate (%).
-4. Enter revenue per conversion (€).
+4. Enter revenue per conversion (EUR).
 5. Click Calculate.
 
 ## Assumptions / limitations
@@ -26,7 +26,7 @@ A static SEO ROI calculator that estimates baseline revenue, projected revenue a
 ## Monetization
 
 This tool is free. If you find it useful, you can support it here (optional):  
-👉 https://www.buymeacoffee.com/gintsa
+https://www.buymeacoffee.com/gintsa
 
 ## Evidence
 
@@ -37,7 +37,7 @@ This tool is free. If you find it useful, you can support it here (optional):
 
 ## Reflection
 
-### What I shipped (2–4 sentences)
+### What I shipped (2-4 sentences)
 
 SEO ROI tool that calculates the increase based on the expected change in traffic. It's a quick and convenient tool that does exacly one thing.
 
@@ -68,5 +68,5 @@ Quality is not the best. Some bugs.
 ## AI Usage Log
 
 - Used AI for: initial UI structure, validation approach, and calculation implementation per BBG_001 formulas.
-- I reviewed/edited: (fill in after you commit — what you changed and why)
+- I reviewed/edited: (fill in after you commit - what you changed and why)
 - I can explain: inputs, validation ranges, and the calculation formulas in app.js.

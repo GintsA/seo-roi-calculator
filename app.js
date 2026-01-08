@@ -6,7 +6,8 @@ const resultsEl = document.getElementById("results");
 const el = (id) => document.getElementById(id);
 
 function formatEUR(value) {
-  return new Intl.NumberFormat("en-GB", { style: "currency", currency: "EUR" }).format(value);
+  const formatted = value.toLocaleString("en-GB", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  return `EUR ${formatted}`;
 }
 
 function formatInt(value) {
@@ -14,9 +15,17 @@ function formatInt(value) {
 }
 
 function readNumber(id) {
-  const raw = el(id).value;
+  const raw = el(id).value.trim();
   if (raw === "") return null;
-  const num = Number(raw);
+  const hasComma = raw.includes(",");
+  const hasDot = raw.includes(".");
+  let normalized = raw;
+  if (hasComma && hasDot) {
+    normalized = raw.replace(/,/g, "");
+  } else if (hasComma) {
+    normalized = raw.replace(",", ".");
+  }
+  const num = Number(normalized);
   return Number.isFinite(num) ? num : null;
 }
 
@@ -27,7 +36,7 @@ function validate(values) {
     { key: "currentVisitors", label: "Current monthly visitors", min: 0, max: 100000000, integer: true },
     { key: "trafficIncrease", label: "Expected traffic increase (%)", min: 0, max: 500 },
     { key: "conversionRate", label: "Conversion rate (%)", min: 0, max: 100 },
-    { key: "revenuePerConversion", label: "Revenue per conversion (€)", min: 0, max: 1000000 },
+    { key: "revenuePerConversion", label: "Revenue per conversion (EUR)", min: 0, max: 1000000 },
   ];
 
   for (const r of rules) {

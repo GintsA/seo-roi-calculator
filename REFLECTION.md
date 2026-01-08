@@ -2,7 +2,7 @@
 
 # Reflection (Level 01)
 
-## What I shipped (2–4 sentences)
+## What I shipped (2-4 sentences)
 
 SEO ROI tool that calculates the increase based on the expected change in traffic. It's a quick and convenient tool that does exacly one thing.
 
