@@ -129,8 +129,10 @@ function setFieldErrorState(invalidIds) {
     if (!input) continue;
     if (invalidIds.has(field.id)) {
       input.classList.add("input-error");
+      input.setAttribute("aria-invalid", "true");
     } else {
       input.classList.remove("input-error");
+      input.removeAttribute("aria-invalid");
     }
   }
 }
@@ -168,8 +170,10 @@ function calculate(values) {
 function showErrors(errs) {
   if (errs.length === 0) {
     errorsEl.innerHTML = "";
+    errorsEl.hidden = true;
     return;
   }
+  errorsEl.hidden = false;
   errorsEl.innerHTML = `<ul>${errs.map((e) => `<li>${e}</li>`).join("")}</ul>`;
 }
 

@@ -14,26 +14,26 @@
       <div class="grid">
         <label>
           <span>Current monthly visitors</span>
-          <small class="help">per month</small>
-          <input id="currentVisitors" type="number" inputmode="numeric" min="0" max="100000000" step="1" placeholder="10000" required />
+          <small id="currentVisitorsHelp" class="help">per month</small>
+          <input id="currentVisitors" type="number" inputmode="numeric" min="0" max="100000000" step="1" placeholder="10000" aria-describedby="currentVisitorsHelp" required />
         </label>
 
         <label>
           <span>Expected traffic increase (%)</span>
-          <small class="help">0-500</small>
-          <input id="trafficIncreasePct" type="text" inputmode="decimal" step="0.01" placeholder="20" required />
+          <small id="trafficIncreaseHelp" class="help">0-500</small>
+          <input id="trafficIncreasePct" type="text" inputmode="decimal" step="0.01" placeholder="20" aria-describedby="trafficIncreaseHelp" required />
         </label>
 
         <label>
           <span>Conversion rate (%)</span>
-          <small class="help">0-100</small>
-          <input id="conversionRatePct" type="text" inputmode="decimal" step="0.01" placeholder="2.5" required />
+          <small id="conversionRateHelp" class="help">0-100</small>
+          <input id="conversionRatePct" type="text" inputmode="decimal" step="0.01" placeholder="2.5" aria-describedby="conversionRateHelp" required />
         </label>
 
         <label>
           <span>Revenue per conversion (EUR)</span>
-          <small class="help">EUR per conversion</small>
-          <input id="revenuePerConversion" type="text" inputmode="decimal" step="0.01" placeholder="50" required />
+          <small id="revenuePerConversionHelp" class="help">EUR per conversion</small>
+          <input id="revenuePerConversion" type="text" inputmode="decimal" step="0.01" placeholder="50" aria-describedby="revenuePerConversionHelp" required />
         </label>
       </div>
 

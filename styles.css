@@ -93,12 +93,18 @@ input {
 }
 
 input:focus {
-  outline: 2px solid rgba(30, 90, 138, 0.2);
+  outline: none;
   border-color: var(--accent);
 }
 
+input:focus-visible {
+  outline: 3px solid rgba(30, 90, 138, 0.35);
+  outline-offset: 2px;
+}
+
 input.input-error {
-  border: 1px solid #b00020;
+  border: 2px solid #b00020;
+  background: #fff7f7;
   box-shadow: 0 0 0 3px rgba(176, 0, 32, 0.08);
 }
 
@@ -157,6 +163,11 @@ button:focus-visible {
 .errors {
   margin-top: var(--space-3);
   color: #b00020;
+  background: #fff1f2;
+  border: 1px solid #f3b7be;
+  border-left-width: 4px;
+  border-radius: 12px;
+  padding: var(--space-3);
 }
 
 .errors ul {
