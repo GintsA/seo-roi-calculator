@@ -2,6 +2,27 @@
 
 **Live app:** https://gintsa.github.io/seo-roi-calculator/
 
+Version/tag: v0.1.0
+Release date: 2026-01-08
+
+## What this is
+
+A static SEO ROI calculator that estimates baseline revenue, projected revenue after an SEO-driven traffic increase, and the revenue delta using a simple linear model.
+
+## How to use
+
+1. Enter current monthly visitors.
+2. Enter expected traffic increase (%).
+3. Enter conversion rate (%).
+4. Enter revenue per conversion (€).
+5. Click Calculate.
+
+## Assumptions / limitations
+
+- Simple linear estimate, not a guarantee.
+- Does not model seasonality, retention, CAC, or SEO costs.
+- Visitors/conversions shown as rounded whole numbers; revenue shown in EUR.
+
 ## Monetization
 
 This tool is free. If you find it useful, you can support it here (optional):  
