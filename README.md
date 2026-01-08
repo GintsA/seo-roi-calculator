@@ -2,6 +2,8 @@
 
 **Live app:** https://gintsa.github.io/seo-roi-calculator/
 
+**Repo:** https://github.com/GintsA/seo-roi-calculator
+
 Version/tag: v0.1.0
 Release date: 2026-01-08
 
@@ -17,6 +19,11 @@ A static SEO ROI calculator that estimates baseline revenue, projected revenue a
 4. Enter revenue per conversion (EUR).
 5. Click Calculate.
 
+## Quick test example
+
+Inputs: visitors 10,000; traffic increase 20%; conversion rate 2.5; revenue per conversion 50.  
+Expected: baseline revenue, projected revenue, and delta appear; visitors/conversions are whole numbers, revenue is shown in EUR with two decimals.
+
 ## Assumptions / limitations
 
 - Simple linear estimate, not a guarantee.
@@ -30,10 +37,10 @@ https://buymeacoffee.com/gintsa
 
 ## Evidence
 
-- screenshot-01.png
-- screenshot-02.png
-- demo.mp4
-- monetization-proof.png
+- [screenshot-01.png](./EVIDENCE/screenshot-01.png)
+- [screenshot-02.png](./EVIDENCE/screenshot-02.png)
+- [demo.mp4](./EVIDENCE/demo.mp4)
+- [monetization-proof.png](./EVIDENCE/monetization-proof.png)
 
 ## Reflection
 
