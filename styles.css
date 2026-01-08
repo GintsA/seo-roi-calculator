@@ -212,19 +212,22 @@ button:focus-visible {
 
 .support {
   margin-top: var(--space-6);
-  padding: var(--space-4);
+  padding: var(--space-3);
   border: 1px solid var(--border);
-  border-radius: 14px;
+  border-radius: 12px;
   background: #fff;
-  box-shadow: var(--shadow);
+  box-shadow: none;
+  font-size: 14px;
 }
 
 .support::before {
   content: "Built by Gints - BBG Level 1";
   display: block;
   font-weight: 600;
-  color: var(--ink-700);
+  color: var(--ink-500);
   margin-bottom: var(--space-2);
+  font-size: 12px;
+  letter-spacing: 0.01em;
 }
 
 .support a {

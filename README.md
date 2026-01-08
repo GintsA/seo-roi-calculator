@@ -26,7 +26,7 @@ A static SEO ROI calculator that estimates baseline revenue, projected revenue a
 ## Monetization
 
 This tool is free. If you find it useful, you can support it here (optional):  
-https://www.buymeacoffee.com/gintsa
+https://buymeacoffee.com/gintsa
 
 ## Evidence
 
