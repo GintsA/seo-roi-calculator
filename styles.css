@@ -159,6 +159,10 @@ button:focus-visible {
   color: #b00020;
 }
 
+.errors ul {
+  margin-top: var(--space-2);
+}
+
 .results {
   margin-top: var(--space-6);
 }
@@ -181,6 +185,14 @@ button:focus-visible {
   padding: var(--space-4);
   background: var(--surface-2);
   box-shadow: var(--shadow);
+}
+
+.card p {
+  margin: 0 0 var(--space-2);
+}
+
+.card p:last-child {
+  margin-bottom: 0;
 }
 
 .note {
